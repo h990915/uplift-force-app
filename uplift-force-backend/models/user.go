@@ -29,9 +29,9 @@ const (
 type User struct {
 	ID            uint64  `json:"id" gorm:"primaryKey;autoIncrement;comment:用户ID"`
 	WalletAddress string  `json:"wallet_address" gorm:"type:varchar(42);uniqueIndex:uk_wallet_address;not null;comment:钱包地址(以0x开头)"`
-	Username      string  `json:"username" gorm:"type:varchar(50);uniqueIndex:uk_username;not null;comment:用户名"`
-	Email         *string `json:"email" gorm:"type:varchar(100);uniqueIndex:uk_email;comment:邮箱"`
-	Phone         *string `json:"phone" gorm:"type:varchar(20);comment:手机号"`
+	Username      string  `json:"username" gorm:"type:varchar(50);not null;comment:用户名"`
+	Email         *string `json:"email" gorm:"type:varchar(100);comment:邮箱"`
+	Phone         string  `json:"phone" gorm:"type:varchar(20);not null;comment:手机号"`
 	Avatar        *string `json:"avatar" gorm:"type:varchar(500);comment:头像URL"`
 	Nickname      *string `json:"nickname" gorm:"type:varchar(100);comment:昵称"`
 

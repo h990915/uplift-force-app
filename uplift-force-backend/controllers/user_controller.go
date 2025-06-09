@@ -33,7 +33,7 @@ func CreateUser(c *gin.Context) {
 		WalletAddress: req.WalletAddress,
 		Username:      req.Username,
 		Email:         req.Email,
-		Phone:         req.Phone,
+		Phone:         *req.Phone,
 		Avatar:        req.Avatar,
 		Nickname:      req.Nickname,
 		Role:          models.RolePlayer, // 默认角色

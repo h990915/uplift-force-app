@@ -5,10 +5,10 @@ import (
 )
 
 type Response struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
+	Code    int         `json:"code" example:"200"`
+	Message string      `json:"message" example:"操作成功"`
 	Data    interface{} `json:"data,omitempty"`
-	Error   string      `json:"error,omitempty"`
+	Error   string      `json:"error,omitempty" example:"错误详情"`
 }
 
 func SuccessResponse(c *gin.Context, message string, data interface{}) {
