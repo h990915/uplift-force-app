@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -15,9 +16,9 @@ import (
 
 // JWT配置
 var (
-	JWTSecret       = []byte("your-super-secret-key-change-in-production") // 生产环境请使用环境变量
-	AccessTokenTTL  = time.Hour * 2                                        // 访问token有效期：2小时
-	RefreshTokenTTL = time.Hour * 24 * 7                                   // 刷新token有效期：7天
+	JWTSecret       = []byte(os.Getenv("JWT_SECRET")) // JWT TOKEN
+	AccessTokenTTL  = time.Hour * 4                   // 访问token有效期：4小时
+	RefreshTokenTTL = time.Hour * 24 * 7              // 刷新token有效期：7天
 )
 
 // JWT Claims结构

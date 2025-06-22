@@ -49,15 +49,16 @@ func verifyEthereumSignature(message, signature, walletAddress string) error {
 }
 
 // CheckWallet 检查钱包是否已注册
-// @Summary      检查钱包注册状态
-// @Description  检查指定钱包地址是否已在系统中注册
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        request body models.CheckWalletRequest true "钱包地址信息"
-// @Success      200  {object}  utils.Response
-// @Failure      400  {object}  utils.Response
-// @Router       /auth/checkWallet [post]
+//
+//	@Summary		检查钱包注册状态
+//	@Description	检查指定钱包地址是否已在系统中注册
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.CheckWalletRequest	true	"钱包地址信息"
+//	@Success		200		{object}	utils.Response
+//	@Failure		400		{object}	utils.Response
+//	@Router			/auth/checkWallet [post]
 func CheckWallet(c *gin.Context) {
 	var req models.CheckWalletRequest
 
@@ -88,19 +89,20 @@ func CheckWallet(c *gin.Context) {
 }
 
 // Login 用户登录
-// @Summary      钱包签名登录
-// @Description  使用钱包签名进行用户登录验证
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        request body models.LoginRequest true "登录信息"
-// @Success      200  {object}  utils.Response
-// @Failure      400  {object}  utils.Response
-// @Failure      401  {object}  utils.Response
-// @Failure      403  {object}  utils.Response
-// @Failure      404  {object}  utils.Response
-// @Failure      500  {object}  utils.Response
-// @Router       /auth/login [post]
+//
+//	@Summary		钱包签名登录
+//	@Description	使用钱包签名进行用户登录验证
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.LoginRequest	true	"登录信息"
+//	@Success		200		{object}	utils.Response
+//	@Failure		400		{object}	utils.Response
+//	@Failure		401		{object}	utils.Response
+//	@Failure		403		{object}	utils.Response
+//	@Failure		404		{object}	utils.Response
+//	@Failure		500		{object}	utils.Response
+//	@Router			/auth/login [post]
 func Login(c *gin.Context) {
 	var req models.LoginRequest
 
@@ -124,7 +126,7 @@ func Login(c *gin.Context) {
 	var user models.User
 	if err := config.DB.Where("wallet_address = ?", req.WalletAddress).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			utils.ErrorResponse(c, http.StatusNotFound, "用户不存在", "请先注册")
+			utils.ErrorResponse(c, http.StatusBadRequest, "用户不存在", "请先注册")
 			return
 		}
 		utils.ErrorResponse(c, http.StatusInternalServerError, "查询用户失败", err.Error())
@@ -162,17 +164,18 @@ func Login(c *gin.Context) {
 }
 
 // Register 用户注册
-// @Summary      钱包地址注册
-// @Description  使用钱包地址注册新用户账户
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        request body models.RegisterRequest true "注册信息"
-// @Success      200  {object}  utils.Response
-// @Failure      400  {object}  utils.Response
-// @Failure      409  {object}  utils.Response
-// @Failure      500  {object}  utils.Response
-// @Router       /auth/register [post]
+//
+//	@Summary		钱包地址注册
+//	@Description	使用钱包地址注册新用户账户
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.RegisterRequest	true	"注册信息"
+//	@Success		200		{object}	utils.Response
+//	@Failure		400		{object}	utils.Response
+//	@Failure		409		{object}	utils.Response
+//	@Failure		500		{object}	utils.Response
+//	@Router			/auth/register [post]
 func Register(c *gin.Context) {
 	var req models.RegisterRequest
 
@@ -187,10 +190,10 @@ func Register(c *gin.Context) {
 	}
 
 	// 验证签名
-	//if err := verifyEthereumSignature(req.Message, req.Signature, req.WalletAddress); err != nil {
-	//	utils.ErrorResponse(c, http.StatusUnauthorized, "签名验证失败", err.Error())
-	//	return
-	//}
+	if err := verifyEthereumSignature(req.Message, req.Signature, req.WalletAddress); err != nil {
+		utils.ErrorResponse(c, http.StatusUnauthorized, "签名验证失败", err.Error())
+		return
+	}
 
 	// 检查钱包地址是否已注册
 	var existingUser models.User
@@ -200,10 +203,10 @@ func Register(c *gin.Context) {
 	}
 
 	// 检查用户名是否已存在
-	//if err := config.DB.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
-	//	utils.ErrorResponse(c, http.StatusConflict, "用户名已存在", "")
-	//	return
-	//}
+	if err := config.DB.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
+		utils.ErrorResponse(c, http.StatusConflict, "用户名已存在", "")
+		return
+	}
 
 	// 创建新用户
 	user := models.User{
@@ -240,17 +243,18 @@ func Register(c *gin.Context) {
 }
 
 // RefreshToken 刷新访问令牌
-// @Summary      刷新访问令牌
-// @Description  使用刷新令牌获取新的访问令牌
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        request body models.RefreshTokenRequest true "刷新令牌信息"
-// @Success      200  {object}  utils.Response
-// @Failure      400  {object}  utils.Response
-// @Failure      401  {object}  utils.Response
-// @Failure      500  {object}  utils.Response
-// @Router       /auth/refresh [post]
+//
+//	@Summary		刷新访问令牌
+//	@Description	使用刷新令牌获取新的访问令牌
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.RefreshTokenRequest	true	"刷新令牌信息"
+//	@Success		200		{object}	utils.Response
+//	@Failure		400		{object}	utils.Response
+//	@Failure		401		{object}	utils.Response
+//	@Failure		500		{object}	utils.Response
+//	@Router			/auth/refresh [post]
 func RefreshToken(c *gin.Context) {
 	var req models.RefreshTokenRequest
 
@@ -292,15 +296,16 @@ func RefreshToken(c *gin.Context) {
 }
 
 // GetProfile 获取用户资料
-// @Summary      获取当前用户资料
-// @Description  获取已登录用户的个人资料信息
-// @Tags         User
-// @Accept       json
-// @Produce      json
-// @Security     BearerAuth
-// @Success      200  {object}  utils.Response
-// @Failure      401  {object}  utils.Response
-// @Router       /auth/profile [get]
+//
+//	@Summary		获取当前登录用户资料
+//	@Description	获取已登录用户的个人资料信息
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Success		200	{object}	utils.Response
+//	@Failure		401	{object}	utils.Response
+//	@Router			/auth/profile [get]
 func GetProfile(c *gin.Context) {
 	user, exists := middleware.GetCurrentUser(c)
 	if !exists {
@@ -312,31 +317,43 @@ func GetProfile(c *gin.Context) {
 }
 
 // Logout 用户登出
-// @Summary      用户登出
-// @Description  用户登出系统
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Security     BearerAuth
-// @Success      200  {object}  utils.Response
-// @Failure      401  {object}  utils.Response
-// @Router       /auth/logout [post]
+//
+//	@Summary		用户登出
+//	@Description	用户登出系统
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Success		200	{object}	utils.Response
+//	@Failure		401	{object}	utils.Response
+//	@Router			/auth/logout [post]
 func Logout(c *gin.Context) {
-	// 在生产环境中，你可能想要将token加入黑名单
-	utils.SuccessResponse(c, "登出成功", nil)
+	// 获取当前用户信息（验证token有效性）
+	user, exists := middleware.GetCurrentUser(c)
+	if !exists {
+		utils.ErrorResponse(c, http.StatusUnauthorized, "获取用户信息失败", "")
+		return
+	}
+
+	// 返回登出成功响应
+	utils.SuccessResponse(c, "登出成功", gin.H{
+		"wallet_address": user.WalletAddress,
+		"message":        "您已成功登出系统",
+	})
 }
 
 // VerifyWallet 验证钱包签名
-// @Summary      验证钱包签名
-// @Description  验证钱包签名的有效性，不进行登录操作
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        request body models.LoginRequest true "钱包验证信息"
-// @Success      200  {object}  utils.Response
-// @Failure      400  {object}  utils.Response
-// @Failure      401  {object}  utils.Response
-// @Router       /auth/verify [post]
+//
+//	@Summary		验证钱包签名
+//	@Description	验证钱包签名的有效性，不进行登录操作
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		models.LoginRequest	true	"钱包验证信息"
+//	@Success		200		{object}	utils.Response
+//	@Failure		400		{object}	utils.Response
+//	@Failure		401		{object}	utils.Response
+//	@Router			/auth/verify [post]
 func VerifyWallet(c *gin.Context) {
 	var req models.LoginRequest
 

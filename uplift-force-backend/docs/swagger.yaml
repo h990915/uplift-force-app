@@ -7,6 +7,40 @@ definitions:
     required:
     - wallet_address
     type: object
+  models.CreateOrderRequest:
+    properties:
+      current_rank:
+        type: string
+      deadline:
+        type: string
+      game_account:
+        type: string
+      game_mode:
+        type: string
+      game_type:
+        type: string
+      requirements:
+        type: string
+      server_region:
+        type: string
+      service_type:
+        type: string
+      target_rank:
+        type: string
+      total_amount:
+        type: string
+      tx_hash:
+        type: string
+    required:
+    - deadline
+    - game_account
+    - game_mode
+    - game_type
+    - server_region
+    - service_type
+    - total_amount
+    - tx_hash
+    type: object
   models.LoginRequest:
     properties:
       message:
@@ -19,6 +53,71 @@ definitions:
     - message
     - signature
     - wallet_address
+    type: object
+  models.Order:
+    properties:
+      accepted_at:
+        type: string
+      booster_deposit:
+        type: string
+      booster_deposit_tx_hash:
+        type: string
+      booster_id:
+        type: integer
+      cancelled_at:
+        type: string
+      chain_order_id:
+        type: integer
+      completed_at:
+        type: string
+      confirmed_at:
+        type: string
+      contract_address:
+        type: string
+      created_at:
+        type: string
+      current_rank:
+        type: string
+      deadline:
+        type: string
+      deposit_tx_hash:
+        type: string
+      game_account:
+        type: string
+      game_mode:
+        type: string
+      game_type:
+        type: string
+      id:
+        type: integer
+      order_no:
+        type: string
+      payment_tx_hash:
+        type: string
+      player_deposit:
+        type: string
+      player_id:
+        type: integer
+      posted_at:
+        type: string
+      remaining_amount:
+        type: string
+      requirements:
+        type: string
+      server_region:
+        type: string
+      service_type:
+        type: string
+      settlement_tx_hash:
+        type: string
+      status:
+        type: string
+      target_rank:
+        type: string
+      total_amount:
+        type: string
+      updated_at:
+        type: string
     type: object
   models.RefreshTokenRequest:
     properties:
@@ -80,7 +179,7 @@ definitions:
         example: 操作成功
         type: string
     type: object
-host: 45.32.67.85:8080
+host: 127.0.0.1:8080
 info:
   contact:
     email: support@swagger.io
@@ -94,6 +193,300 @@ info:
   title: Uplift Force Backend API
   version: "1.0"
 paths:
+  /api/v1/orders:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询订单列表，支持多种筛选条件，包含关联的玩家和代练师用户名信息
+      parameters:
+      - default: 1
+        description: 页码，默认为1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量，默认为20，最大100
+        in: query
+        maximum: 100
+        minimum: 1
+        name: page_size
+        type: integer
+      - description: 订单状态
+        enum:
+        - posted
+        - accepted
+        - confirmed
+        - in_progress
+        - completed
+        - cancelled
+        - failed
+        in: query
+        name: status
+        type: string
+      - description: 游戏类型
+        example: LOL
+        in: query
+        name: game_type
+        type: string
+      - description: 游戏模式
+        enum:
+        - ranked_solo
+        - ranked_flex
+        in: query
+        name: game_mode
+        type: string
+      - description: 服务类型
+        enum:
+        - boost
+        in: query
+        name: service_type
+        type: string
+      - description: 用户筛选：my=我的订单，available=可接单订单
+        enum:
+        - my
+        - available
+        in: query
+        name: user_filter
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            properties:
+              code:
+                type: integer
+              data:
+                properties:
+                  orders:
+                    items:
+                      properties:
+                        booster_id:
+                          type: integer
+                        booster_username:
+                          type: string
+                        created_at:
+                          type: string
+                        current_rank:
+                          type: string
+                        deadline:
+                          type: string
+                        game_account:
+                          type: string
+                        game_mode:
+                          type: string
+                        game_type:
+                          type: string
+                        id:
+                          type: integer
+                        order_no:
+                          type: string
+                        player_deposit:
+                          type: string
+                        player_id:
+                          type: integer
+                        player_username:
+                          type: string
+                        posted_at:
+                          type: string
+                        remaining_amount:
+                          type: string
+                        server_region:
+                          type: string
+                        service_type:
+                          type: string
+                        status:
+                          type: string
+                        target_rank:
+                          type: string
+                        total_amount:
+                          type: string
+                        updated_at:
+                          type: string
+                      type: object
+                    type: array
+                  page:
+                    type: integer
+                  page_size:
+                    type: integer
+                  total:
+                    type: integer
+                type: object
+              message:
+                type: string
+            type: object
+        "400":
+          description: 参数错误
+          schema:
+            properties:
+              code:
+                type: integer
+              error:
+                type: string
+              message:
+                type: string
+            type: object
+        "401":
+          description: 未授权访问
+          schema:
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+            type: object
+        "500":
+          description: 服务器内部错误
+          schema:
+            properties:
+              code:
+                type: integer
+              error:
+                type: string
+              message:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: 获取订单列表
+      tags:
+      - Orders
+  /api/v1/summoner/getWithRank:
+    get:
+      consumes:
+      - application/json
+      description: 根据游戏名称和标签获取召唤师的基本信息和排位数据，系统会根据tagLine自动识别对应的游戏地区
+      parameters:
+      - description: 召唤师游戏名称，支持中文、英文等多种字符
+        example: '"Hide on bush"'
+        in: query
+        maxLength: 50
+        minLength: 1
+        name: characterName
+        required: true
+        type: string
+      - description: 召唤师标签，用于识别游戏地区，大小写不敏感
+        enum:
+        - KR
+        - KR1
+        - NA
+        - NA1
+        - EUW
+        - EUNE
+        - JP
+        - JP1
+        - BR
+        - BR1
+        - LAN
+        - LA1
+        - LAS
+        - LA2
+        - TR
+        - TR1
+        - RU
+        - RUS
+        - OCE
+        - OC1
+        - AUS
+        - PH
+        - PH2
+        - SG
+        - SG2
+        - MY
+        - TH
+        - TH2
+        - TW
+        - TW2
+        - VN
+        - VN2
+        example: '"KR1"'
+        in: query
+        maxLength: 10
+        minLength: 1
+        name: tagLine
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 获取成功
+          schema:
+            properties:
+              data:
+                properties:
+                  leagueCount:
+                    type: integer
+                  leagueEntries:
+                    items:
+                      properties:
+                        freshBlood:
+                          type: boolean
+                        hotStreak:
+                          type: boolean
+                        inactive:
+                          type: boolean
+                        leagueId:
+                          type: string
+                        leaguePoints:
+                          type: integer
+                        losses:
+                          type: integer
+                        puuid:
+                          type: string
+                        queueType:
+                          type: string
+                        rank:
+                          type: string
+                        summonerId:
+                          type: string
+                        tier:
+                          type: string
+                        veteran:
+                          type: boolean
+                        wins:
+                          type: integer
+                      type: object
+                    type: array
+                  summoner:
+                    properties:
+                      gameName:
+                        type: string
+                      puuid:
+                        type: string
+                      tagLine:
+                        type: string
+                    type: object
+                type: object
+              status:
+                type: string
+            type: object
+        "400":
+          description: 参数错误：characterName或tagLine为空
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "404":
+          description: 召唤师不存在
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "500":
+          description: 服务器内部错误：API调用失败或数据解析失败
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: 获取召唤师资料和排位信息
+      tags:
+      - 召唤师管理
   /auth/checkWallet:
     post:
       consumes:
@@ -201,7 +594,7 @@ paths:
             $ref: '#/definitions/utils.Response'
       security:
       - BearerAuth: []
-      summary: 获取当前用户资料
+      summary: 获取当前登录用户资料
       tags:
       - User
   /auth/refresh:
@@ -302,6 +695,55 @@ paths:
       summary: 验证钱包签名
       tags:
       - Authentication
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: 用户提交游戏代练订单信息，包含区块链交易哈希进行验证
+      parameters:
+      - description: 创建订单信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Order'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建代练订单
+      tags:
+      - Orders
 securityDefinitions:
   BearerAuth:
     in: header

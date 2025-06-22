@@ -15,7 +15,8 @@ func SetupRoutes() *gin.Engine {
 
 	// 配置CORS中间件
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "http://45.32.67.85:3000", "https://uplift.yoosmart.top", "https://api.yoosmart.top"}, // 允许的前端域名
+		//AllowOrigins:     []string{"http://localhost:3000", "http://45.32.67.85:3000", "https://uplift.yoosmart.top", "https://api.yoosmart.top"},
+		AllowOrigins:     []string{"*"}, // 测试环境允许所有跨域请求
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -35,6 +36,9 @@ func SetupRoutes() *gin.Engine {
 		public.POST("/auth/refresh", controllers.RefreshToken)    // 刷新token
 		public.POST("/auth/verify", controllers.VerifyWallet)     // 验证钱包（仅验签）
 		public.POST("/auth/checkWallet", controllers.CheckWallet) // 检查钱包是否已注册
+
+		public.GET("/orders", controllers.GetOrders)          // 获取订单列表（支持筛选可接单的订单）
+		public.GET("/orders/:id", controllers.GetOrderDetail) // 获取订单详情
 	}
 
 	// 需要认证的路由
@@ -50,12 +54,32 @@ func SetupRoutes() *gin.Engine {
 		protected.PUT("/users/:id", controllers.UpdateUser)
 		protected.PUT("/users/:id/login", controllers.UpdateLastLogin)
 
-		// 管理员专用路由
-		admin := protected.Group("")
-		admin.Use(middleware.RequireAdmin())
+		// 订单相关（需要登录）
+		orderRoutes := protected.Group("/orders")
 		{
-			admin.DELETE("/users/:id", controllers.DeleteUser)
+			// 订单基础操作
+			orderRoutes.POST("", controllers.CreateOrder)              // 创建订单（玩家）
+			orderRoutes.POST("/accept", controllers.AcceptOrder)       // 接受订单（代练）
+			orderRoutes.POST("/confirm", controllers.ConfirmOrder)     // 确认订单并支付剩余金额（玩家）
+			orderRoutes.POST("/cancel", controllers.CancelOrder)       // 取消订单（玩家/代练）
+			orderRoutes.POST("/complete", controllers.CompleteOrder)   // 手动完成订单（代练）
+			orderRoutes.PUT("/:id/dispute", controllers.CreateDispute) // 创建争议（玩家/代练）
+
+			// 订单状态查询
+			orderRoutes.GET("/my", controllers.GetMyOrders)               // 获取我的订单（我发布的+我接取的）
+			orderRoutes.GET("/available", controllers.GetAvailableOrders) // 获取可接单的订单
+			orderRoutes.GET("/:id/logs", controllers.GetOrderLogs)        // 获取订单操作日志
 		}
+
+		// 订单相关（需要登录）
+		riotRoutes := protected.Group("/riot")
+		{
+			handler := &controllers.GameApiHandler{}
+			riotRoutes.GET("/getSummonerPUUID", handler.GetSummonerPUUID)
+			riotRoutes.GET("/getLeagueEntries", handler.GetLeagueEntries)
+			riotRoutes.GET("/getWithRank", handler.GetSummonerProfileWithRank)
+		}
+
 	}
 
 	return r

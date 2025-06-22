@@ -24,6 +24,431 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/orders": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页查询订单列表，支持多种筛选条件，包含关联的玩家和代练师用户名信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "获取订单列表",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码，默认为1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页数量，默认为20，最大100",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "posted",
+                            "accepted",
+                            "confirmed",
+                            "in_progress",
+                            "completed",
+                            "cancelled",
+                            "failed"
+                        ],
+                        "type": "string",
+                        "description": "订单状态",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "LOL",
+                        "description": "游戏类型",
+                        "name": "game_type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ranked_solo",
+                            "ranked_flex"
+                        ],
+                        "type": "string",
+                        "description": "游戏模式",
+                        "name": "game_mode",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "boost"
+                        ],
+                        "type": "string",
+                        "description": "服务类型",
+                        "name": "service_type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "my",
+                            "available"
+                        ],
+                        "type": "string",
+                        "description": "用户筛选：my=我的订单，available=可接单订单",
+                        "name": "user_filter",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "orders": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "booster_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "booster_username": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "current_rank": {
+                                                        "type": "string"
+                                                    },
+                                                    "deadline": {
+                                                        "type": "string"
+                                                    },
+                                                    "game_account": {
+                                                        "type": "string"
+                                                    },
+                                                    "game_mode": {
+                                                        "type": "string"
+                                                    },
+                                                    "game_type": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "order_no": {
+                                                        "type": "string"
+                                                    },
+                                                    "player_deposit": {
+                                                        "type": "string"
+                                                    },
+                                                    "player_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "player_username": {
+                                                        "type": "string"
+                                                    },
+                                                    "posted_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "remaining_amount": {
+                                                        "type": "string"
+                                                    },
+                                                    "server_region": {
+                                                        "type": "string"
+                                                    },
+                                                    "service_type": {
+                                                        "type": "string"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_rank": {
+                                                        "type": "string"
+                                                    },
+                                                    "total_amount": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "page": {
+                                            "type": "integer"
+                                        },
+                                        "page_size": {
+                                            "type": "integer"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "error": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "未授权访问",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "integer"
+                                },
+                                "error": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/summoner/getWithRank": {
+            "get": {
+                "description": "根据游戏名称和标签获取召唤师的基本信息和排位数据，系统会根据tagLine自动识别对应的游戏地区",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "召唤师管理"
+                ],
+                "summary": "获取召唤师资料和排位信息",
+                "parameters": [
+                    {
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "type": "string",
+                        "example": "\"Hide on bush\"",
+                        "description": "召唤师游戏名称，支持中文、英文等多种字符",
+                        "name": "characterName",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 10,
+                        "minLength": 1,
+                        "enum": [
+                            "KR",
+                            "KR1",
+                            "NA",
+                            "NA1",
+                            "EUW",
+                            "EUNE",
+                            "JP",
+                            "JP1",
+                            "BR",
+                            "BR1",
+                            "LAN",
+                            "LA1",
+                            "LAS",
+                            "LA2",
+                            "TR",
+                            "TR1",
+                            "RU",
+                            "RUS",
+                            "OCE",
+                            "OC1",
+                            "AUS",
+                            "PH",
+                            "PH2",
+                            "SG",
+                            "SG2",
+                            "MY",
+                            "TH",
+                            "TH2",
+                            "TW",
+                            "TW2",
+                            "VN",
+                            "VN2"
+                        ],
+                        "type": "string",
+                        "example": "\"KR1\"",
+                        "description": "召唤师标签，用于识别游戏地区，大小写不敏感",
+                        "name": "tagLine",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取成功",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "leagueCount": {
+                                            "type": "integer"
+                                        },
+                                        "leagueEntries": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "freshBlood": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "hotStreak": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "inactive": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "leagueId": {
+                                                        "type": "string"
+                                                    },
+                                                    "leaguePoints": {
+                                                        "type": "integer"
+                                                    },
+                                                    "losses": {
+                                                        "type": "integer"
+                                                    },
+                                                    "puuid": {
+                                                        "type": "string"
+                                                    },
+                                                    "queueType": {
+                                                        "type": "string"
+                                                    },
+                                                    "rank": {
+                                                        "type": "string"
+                                                    },
+                                                    "summonerId": {
+                                                        "type": "string"
+                                                    },
+                                                    "tier": {
+                                                        "type": "string"
+                                                    },
+                                                    "veteran": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "wins": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "summoner": {
+                                            "type": "object",
+                                            "properties": {
+                                                "gameName": {
+                                                    "type": "string"
+                                                },
+                                                "puuid": {
+                                                    "type": "string"
+                                                },
+                                                "tagLine": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "status": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误：characterName或tagLine为空",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "召唤师不存在",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误：API调用失败或数据解析失败",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/checkWallet": {
             "post": {
                 "description": "检查指定钱包地址是否已在系统中注册",
@@ -179,7 +604,7 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "获取当前用户资料",
+                "summary": "获取当前登录用户资料",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -345,6 +770,87 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/orders": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "用户提交游戏代练订单信息，包含区块链交易哈希进行验证",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "创建代练订单",
+                "parameters": [
+                    {
+                        "description": "创建订单信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.Order"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -355,6 +861,54 @@ const docTemplate = `{
             ],
             "properties": {
                 "wallet_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateOrderRequest": {
+            "type": "object",
+            "required": [
+                "deadline",
+                "game_account",
+                "game_mode",
+                "game_type",
+                "server_region",
+                "service_type",
+                "total_amount",
+                "tx_hash"
+            ],
+            "properties": {
+                "current_rank": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "type": "string"
+                },
+                "game_account": {
+                    "type": "string"
+                },
+                "game_mode": {
+                    "type": "string"
+                },
+                "game_type": {
+                    "type": "string"
+                },
+                "requirements": {
+                    "type": "string"
+                },
+                "server_region": {
+                    "type": "string"
+                },
+                "service_type": {
+                    "type": "string"
+                },
+                "target_rank": {
+                    "type": "string"
+                },
+                "total_amount": {
+                    "type": "string"
+                },
+                "tx_hash": {
                     "type": "string"
                 }
             }
@@ -374,6 +928,104 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "wallet_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Order": {
+            "type": "object",
+            "properties": {
+                "accepted_at": {
+                    "type": "string"
+                },
+                "booster_deposit": {
+                    "type": "string"
+                },
+                "booster_deposit_tx_hash": {
+                    "type": "string"
+                },
+                "booster_id": {
+                    "type": "integer"
+                },
+                "cancelled_at": {
+                    "type": "string"
+                },
+                "chain_order_id": {
+                    "type": "integer"
+                },
+                "completed_at": {
+                    "type": "string"
+                },
+                "confirmed_at": {
+                    "type": "string"
+                },
+                "contract_address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "current_rank": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "type": "string"
+                },
+                "deposit_tx_hash": {
+                    "type": "string"
+                },
+                "game_account": {
+                    "type": "string"
+                },
+                "game_mode": {
+                    "type": "string"
+                },
+                "game_type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_no": {
+                    "type": "string"
+                },
+                "payment_tx_hash": {
+                    "type": "string"
+                },
+                "player_deposit": {
+                    "type": "string"
+                },
+                "player_id": {
+                    "type": "integer"
+                },
+                "posted_at": {
+                    "type": "string"
+                },
+                "remaining_amount": {
+                    "type": "string"
+                },
+                "requirements": {
+                    "type": "string"
+                },
+                "server_region": {
+                    "type": "string"
+                },
+                "service_type": {
+                    "type": "string"
+                },
+                "settlement_tx_hash": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "target_rank": {
+                    "type": "string"
+                },
+                "total_amount": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -476,7 +1128,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "45.32.67.85:8080",
+	Host:             "127.0.0.1:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Uplift Force Backend API",
