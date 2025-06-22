@@ -61,6 +61,28 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 - **Oracle Integration**: Chainlink Functions for external API calls
 - **Web3 Integration**: Wagmi + Viem for wallet connections
 
+## ⛓️ Chainlink Integration
+
+Our platform leverages Chainlink's decentralized oracle infrastructure to enable trustless automation and verification:
+
+### Chainlink Functions
+- **File**: `uplift-force-contract/contracts/RiotDataConsumer.sol`
+- **Purpose**: Fetches real-time player data from official Riot Games APIs
+- **Functionality**: Verifies completion of boosting services by checking player rank progression and match history
+- **Benefits**: Provides objective, tamper-proof verification of service completion
+
+### Chainlink Automation
+- **File**: `uplift-force-contract/contracts/RiotOrderProcessor.sol`  
+- **Purpose**: Automated order processing and payment settlement
+- **Functionality**: Monitors order status and triggers payment distribution when verification conditions are met
+- **Benefits**: Eliminates manual intervention and ensures timely, accurate payments
+
+### Why Chainlink?
+- **Reliability**: Industry-leading oracle network with proven track record
+- **Security**: Decentralized verification prevents single points of failure
+- **Automation**: Reduces operational costs and human error
+- **Transparency**: All oracle interactions recorded on-chain for full auditability
+
 ## 🔐 Trust Mechanism
 
 ### Key Innovation: **Trust Minimization**
