@@ -55,8 +55,6 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 
 ## 🔧 Technology Stack
 
-![dapp技术架构图](https://github.com/user-attachments/assets/3aba7c3c-1536-4f48-b12f-994f7ccae247)
-
 - **Frontend**: Next.js with TypeScript, Tailwind CSS
 - **Blockchain**: Ethereum, Arbitrium L2
 - **Smart Contracts**: Solidity with security best practices
