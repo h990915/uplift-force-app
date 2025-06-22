@@ -67,7 +67,7 @@ contract RiotDataConsumer is FunctionsClient, ConfirmedOwner {
         string tier
     );
 
-    event FunctionError(uint256 indexed orderId, string error);
+    event FunctionError(uint256 indexed orderId, string errorMessage);
 
     // ==================== 构造函数 ====================
     
