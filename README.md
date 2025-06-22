@@ -1,4 +1,4 @@
-![代练dapp架构图 的副本](https://github.com/user-attachments/assets/ade84a9f-482c-49e4-9e57-c9257ccada96)# 🚀 Uplift Force - Web3 Gaming Companion Platform
+# 🚀 Uplift Force - Web3 Gaming Companion Platform
 
 > **Revolutionizing the gaming companion economy through Web3 technology and trustless automation**
 
@@ -27,9 +27,11 @@ The global gaming industry generates over **$200+ billion annually**, but the co
 ## 🏗️ How It Works
 
 ### System Architecture
+
+![代练dapp架构图](https://github.com/user-attachments/assets/ade84a9f-482c-49e4-9e57-c9257ccada96)
+
 ```
 Player Creates Order → Smart Contract Escrow → Booster Accepts → Service Delivery → Chainlink Verification → Automatic Payment
-![dapp技术架构图](https://github.com/user-attachments/assets/3aba7c3c-1536-4f48-b12f-994f7ccae247)
 ```
 
 ### Detailed Workflow
@@ -53,8 +55,10 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 
 ## 🔧 Technology Stack
 
+![dapp技术架构图](https://github.com/user-attachments/assets/3aba7c3c-1536-4f48-b12f-994f7ccae247)
+
 - **Frontend**: Next.js with TypeScript, Tailwind CSS
-- **Blockchain**: Ethereum, Arbitrum L2
+- **Blockchain**: Ethereum, Arbitrium L2
 - **Smart Contracts**: Solidity with security best practices
 - **Oracle Integration**: Chainlink Functions for external API calls
 - **Web3 Integration**: Wagmi + Viem for wallet connections
