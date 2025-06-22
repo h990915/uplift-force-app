@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "../uplift-force-backend/**": true
+  },
+  "search.exclude": {
+    "../uplift-force-backend/**": true
+  },
+  "files.watcherExclude": {
+    "../uplift-force-backend/**": true
+  }
+}
