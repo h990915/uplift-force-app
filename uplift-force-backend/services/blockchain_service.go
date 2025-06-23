@@ -32,9 +32,9 @@ type BlockchainService struct {
 
 func NewBlockchainService() (*BlockchainService, error) {
 	// 连接到区块链
-	rpcURL := os.Getenv("RPC_URL")
+	rpcURL := os.Getenv("AVALANCHE_FUJI_RPC_URL")
 	if rpcURL == "" {
-		return nil, fmt.Errorf("RPC_URL 环境变量未设置")
+		return nil, fmt.Errorf("AVALANCHE_FUJI_RPC_URL 环境变量未设置")
 	}
 
 	client, err := ethclient.Dial(rpcURL)

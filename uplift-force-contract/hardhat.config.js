@@ -40,6 +40,11 @@ module.exports = {
       url: process.env.SEPOLIA_URL,
       accounts: [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2],
       chainId: 11155111
+    },
+      avalancheFuji: {
+      url: process.env.AVALANCHE_FUJI_URL || "https://api.avax-test.network/ext/bc/C/rpc",
+      accounts: [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2],
+      chainId: 43113
     }
   },
   namedAccounts: {

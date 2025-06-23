@@ -10,10 +10,10 @@ async function main() {
     // ==================== 配置区域 ====================
     
     // 主合约地址 - 请替换为你的实际合约地址
-    const MAIN_CONTRACT_ADDRESS = "0xBa096e78F4D9b17959669b381CF8C1849EE525b5";
+    const MAIN_CONTRACT_ADDRESS = "0x9BEa73dE49536643f8749871D39bE9dFCCeC35D5";
     
     // 要授权的地址 - 请替换为你想要授权的地址
-    const AUTHORIZED_ADDRESS = "0xD86db2762D2abdf2e359C509B041bcEc5C993481";
+    const AUTHORIZED_ADDRESS = "0xF238f4A4F4A8582586c037A3A9C476178F97ec58";
     
     // 是否授权 (true: 授权, false: 取消授权)
     const IS_AUTHORIZED = true;

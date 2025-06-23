@@ -209,9 +209,9 @@ func resetLastProcessedBlock() {
 
 func getCurrentBlockNumber() uint64 {
 	// 连接到区块链
-	rpcURL := os.Getenv("RPC_URL")
+	rpcURL := os.Getenv("AVALANCHE_FUJI_RPC_URL")
 	if rpcURL == "" {
-		log.Printf("RPC_URL 环境变量未设置")
+		log.Printf("AVALANCHE_FUJI_RPC_URL 环境变量未设置")
 		return 0
 	}
 
