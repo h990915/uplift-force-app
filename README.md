@@ -59,7 +59,7 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 - **Blockchain**: Arbitrium, Avalanche C-Chain
 - **Backend**: Go Web
 - **Smart Contracts**: Solidity with security best practices
-- **Oracle Integration**: Chainlink Functions for external API calls
+- **Oracle Integration**: Chainlink Functions, Chainlink Automation
 - **Web3 Integration**: Wagmi + Viem for wallet connections
 
 ## ❄️ Avalanche Network Deployment
