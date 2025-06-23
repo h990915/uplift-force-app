@@ -57,6 +57,7 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 
 - **Frontend**: Next.js with TypeScript, Tailwind CSS
 - **Blockchain**: Ethereum, Arbitrium L2
+- **Backend**: Go Web
 - **Smart Contracts**: Solidity with security best practices
 - **Oracle Integration**: Chainlink Functions for external API calls
 - **Web3 Integration**: Wagmi + Viem for wallet connections
