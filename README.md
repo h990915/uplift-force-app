@@ -61,6 +61,19 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 - **Oracle Integration**: Chainlink Functions for external API calls
 - **Web3 Integration**: Wagmi + Viem for wallet connections
 
+## ❄️ Avalanche Network Deployment
+
+### Why Avalanche for Uplift Force?
+
+Uplift Force is deployed on **Avalanche Network** to leverage its superior performance that perfectly aligns with gaming requirements:
+
+- **Sub-second Finality**: Orders confirm in ~1-2 seconds vs. 12+ seconds on Ethereum
+- **Ultra-low Fees**: $0.01-0.05 per transaction enables viable micro-payments
+- **High Throughput**: 4,500+ TPS handles concurrent gaming sessions
+- **Gaming-friendly**: Perfect for real-time services requiring instant confirmations
+
+**Economic Impact**: Traditional platforms take 30-50% fees, while Avalanche + Uplift Force costs only ~5% total (gas + protocol fee).
+
 ## ⛓️ Chainlink Integration
 
 Our platform leverages Chainlink's decentralized oracle infrastructure to enable trustless automation and verification:
