@@ -28,7 +28,7 @@ The global gaming industry generates over **$200+ billion annually**, but the co
 
 ### System Architecture
 
-![代练dapp架构图](https://github.com/user-attachments/assets/ade84a9f-482c-49e4-9e57-c9257ccada96)
+![代练dapp架构图 的副本 (1)](https://github.com/user-attachments/assets/f10fcc85-0c2b-4287-9ce5-bcc9031f0060)
 
 ```
 Player Creates Order → Smart Contract Escrow → Booster Accepts → Service Delivery → Chainlink Verification → Automatic Payment
