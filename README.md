@@ -13,7 +13,7 @@ Uplift Force is a decentralized Web3 application that connects players with skil
 **32GB DDR5 RAM?** ❌ Think again!  
 **240Hz gaming monitor?** ❌ Not even close!
 
-**The rarest gaming hardware is... FRIENDS! 👥**
+**The rarest gaming hardware is... PARTNER! 👥**
 
 That's right! No matter how epic your gaming rig is, without companions to share adventures, even the most powerful setup feels lonely and boring. Gaming is meant to be social!
 
