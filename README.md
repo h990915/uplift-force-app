@@ -48,8 +48,6 @@ The global gaming industry generates over **$200+ billion annually**, but the co
 ✅ **Global Access**: Cryptocurrency enables worldwide participation  
 ✅ **Transparent Operations**: All transactions recorded on blockchain  
 
-[继续原有的其他内容...]
-
 ## 🏗️ How It Works
 
 ### System Architecture
