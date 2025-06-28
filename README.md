@@ -88,7 +88,7 @@ Player Creates Order → Smart Contract Escrow → Booster Accepts → Service D
 
 ## ❄️ Avalanche Network Deployment
 
-### Why Avalanche for Uplift Force?
+### Why Avalanche?
 
 Uplift Force is deployed on **Avalanche Network** to leverage its superior performance that perfectly aligns with gaming requirements:
 
